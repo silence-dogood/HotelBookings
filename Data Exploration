@@ -1,0 +1,26 @@
+--Produce a list of the total number of slots booked per facility in the month of September 2012. Produce an output table consisting of facility id and slots, sorted by the number of slots.
+Select distinct(facid), SUM(slots) from cd.bookings
+WHERE extract (MONTH FROM starttime) = 9
+Group by (facid)
+ORDER BY SUM(slots)
+
+--Produce a list of facilities with more than 1000 slots booked. Produce an output table consisting of facility id and total slots, sorted by facility id.
+Expected Result is 5 rows
+Select distinct(facid), SUM(slots) as total_slots from cd.bookings
+Group by (facid)
+having sum(slots) > 1000
+
+--How can you produce a list of the start times for bookings for tennis courts, for the date '2012-09-21'? Return a list of start time and facility name pairings, ordered by the time.
+Select starttime as start, name 
+from cd.bookings
+INNER JOIN cd.facilities
+ON bookings.facid = facilities.facid
+WHERE DATE(starttime) ='2012-09-21' AND name LIKE '%Tennis Court%'
+ORDER BY starttime
+
+--How can you produce a list of the start times for bookings by members named 'David Farrell'?
+Select starttime as start, firstname, surname 
+from cd.bookings
+INNER JOIN cd.members
+ON members.memid = bookings.memid
+WHERE firstname = 'David' AND surname = 'Farrell'
